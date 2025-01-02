@@ -1,13 +1,5 @@
-# Style guide for Flutter repo
-
-## Summary
-
-Optimize for readability. Write detailed documentation.
-Make error messages useful.
-Never use timeouts or timers.
-Avoid `is`, `print`, `part of`, `extension` and `_`.
-
-## Introduction
+null stop revoke
+delete 
 
 This document contains some high-level philosophy and policy decisions for the Flutter
 project, and a description of specific style issues for some parts of the codebase.
@@ -31,11 +23,7 @@ The primary goal of these style guidelines is to improve code readability so
 that everyone, whether reading the code for the first time or
 maintaining it for years, can quickly determine what the code does.
 Secondary goals are to design systems that are simple; to increase the
-likelihood of catching bugs quickly; and to avoid arguments when there are
-disagreements over subjective matters.
-
-For anything not covered by this document, check the
-[Dart style guide](https://www.dartlang.org/guides/language/effective-dart/)
+likelihood of catching bugs quickly; and to avoid arguments when there 
 for more advice. That document is focused primarily on Dart-specific
 conventions, while this document is more about Flutter conventions.
 
@@ -202,98 +190,7 @@ When code operates on secret global state, it's much harder to reason about.
 
 For example, having dedicated APIs for performance reasons is fine. If one
 specific operation, say clipping a rounded rectangle, is expensive
-using the general API but could be implemented more efficiently
-using a dedicated API, then that is where we would create a dedicated API.
 
-
-### Avoid the lowest common denominator
-
-It is common for SDKs that target multiple platforms (or meta-platforms that
-themselves run on multiple platforms, like the Web) to provide APIs that
-work on all their target platforms. Unfortunately, this usually means that
-features that are unique to one platform or another are unavailable.
-
-For Flutter, we want to avoid this by explicitly aiming to be the best way
-to develop for each platform individually. Our ability to be used cross-
-platform is secondary to our ability to be used on each platform. For example,
-[TextInputAction](https://master-api.flutter.dev/flutter/services/TextInputAction-class.html)
-has values that only make sense on some platforms. Similarly, our platform
-channel mechanism is designed to allow separate extensions to be created on
-each platform.
-
-
-### Avoid APIs that encourage bad practices
-
-For example, don't provide APIs that walk entire trees, or that encourage
-O(N^2) algorithms, or that encourage sequential long-lived operations where
-the operations could be run concurrently.
-
-In particular:
-
-  - String manipulation to generate data or code that will subsequently
-    be interpreted or parsed is a bad practice as it leads to code
-    injection vulnerabilities.
-
-  - If an operation is expensive, that expense should be represented
-    in the API (e.g. by returning a `Future` or a `Stream`).  Avoid
-    providing APIs that hide the expense of tasks.
-
-
-### Avoid exposing API cliffs
-
-Convenience APIs that wrap some aspect of a service from one environment
-for exposure in another environment (for example, exposing an Android API
-in Dart), should expose/wrap the complete API, so that there's no cognitive cliff
-when interacting with that service (where you are fine using the exposed
-API up to a point, but beyond that have to learn all about the underlying
-service).
-
-
-### Avoid exposing API oceans
-
-APIs that wrap underlying services but prevent the underlying API from
-being directly accessed (e.g. how `dart:ui` exposes Skia) should carefully
-expose only the best parts of the underlying API. This may require refactoring
-features so that they are more usable. It may mean avoiding exposing
-convenience features that abstract over expensive operations unless there's a
-distinct performance gain from doing so. A smaller API surface is easier
-to understand.
-
-For example, this is why `dart:ui` doesn't expose `Path.fromSVG()`: we checked,
-and it is just as fast to do that work directly in Dart, so there is no benefit
-to exposing it. That way, we avoid the costs (bigger API surfaces are more
-expensive to maintain, document, and test, and put a compatibility burden on
-the underlying API).
-
-
-### Avoid heuristics and magic
-
-Predictable APIs that the developer feels gives them control are generally preferred
-over APIs that mostly do the right thing but don't give the developer any way to adjust
-the results.
-
-Predictability is reassuring.
-
-
-### Solve real problems by literally solving a real problem
-
-Where possible, especially for new features, you should partner with a real
-customer who wants that feature and is willing to help you test it. Only by
-actually using a feature in the real world can we truly be confident that a
-feature is ready for prime time.
-
-Listen to their feedback, too. If your first customer is saying that your
-feature doesn't actually solve their use case completely, don't dismiss their
-concerns as esoteric. Often, what seems like the problem when you start a
-project turns out to be a trivial concern compared to the real issues faced
-by real developers.
-
-
-### Get early feedback when designing new APIs
-
-If you're designing a new API or a new feature, consider [writing a design doc](Design-Documents.md).
-Then, get feedback from the relevant people, e.g. send it to `flutter-dev` or
-post it on the [relevant chat channel](Chat.md#existing-channels).
 
 
 ### Start designing APIs from the closest point to the developer
